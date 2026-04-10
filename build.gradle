@@ -1,46 +1,37 @@
-plugins {
-    id 'com.gtnewhorizons.retrofuturagradle' version '1.3.27'
+buildscript {
+    repositories {
+        maven { url = 'https://maven.minecraftforge.net/' }
+        maven { url = 'https://maven.gtnewhorizons.com/' }
+        mavenCentral()
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath 'com.gtnewhorizons.retrofuturagradle:plugin:1.3.27'
+    }
 }
+
+apply plugin: 'com.gtnewhorizons.retrofuturagradle'
 
 version = '1.0.0'
 group = 'com.weaponpersonalities'
 archivesBaseName = 'WeaponPersonalities'
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(8)
-        vendor = JvmVendorSpec.AZUL
-    }
-    withSourcesJar()
-}
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 
 minecraft {
     mcVersion = '1.12.2'
     username = 'Developer'
-    useDependencyAccessTransformers = true
-}
-
-repositories {
-    maven {
-        name = 'forge'
-        url = 'https://maven.minecraftforge.net'
-    }
-    maven {
-        name = 'SpongePowered'
-        url = 'https://repo.spongepowered.org/maven'
-    }
-}
-
-dependencies {
-    implementation('net.minecraftforge:forge:1.12.2-14.23.5.2855:universal')
+    mcpMappingChannel = 'stable'
+    mcpMappingVersion = '39'
 }
 
 processResources {
     inputs.property 'version', project.version
-    inputs.property 'mcversion', project.minecraft.mcVersion
+    inputs.property 'mcversion', minecraft.mcVersion
 
     filesMatching('mcmod.info') {
-        expand 'version': project.version, 'mcversion': project.minecraft.mcVersion
+        expand 'version': project.version, 'mcversion': minecraft.mcVersion
     }
 }
 
