@@ -1,0 +1,16 @@
+[
+  {
+    "modid": "weaponpersonalities",
+    "name": "Weapon Personalities",
+    "description": "Gives each weapon type a unique personality, combat style, and mechanic. Includes a combo system, stagger, backstabs, range bonuses, and a mastery system. Compatible with Minecraft 1.12.2.",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "",
+    "updateUrl": "",
+    "authorList": ["WeaponPersonalities"],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
+]
