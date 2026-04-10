@@ -20,33 +20,33 @@ jobs:
           java-version: '8'
           distribution: 'zulu'
 
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v3
-        with:
-          gradle-version: '7.6.4'
-
       - name: Cache Gradle and Minecraft files
         uses: actions/cache@v4
         with:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
-            .gradle/minecraft
-          key: ${{ runner.os }}-rfg-1.12.2-${{ hashFiles('build.gradle') }}
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
-            ${{ runner.os }}-rfg-1.12.2-
+            ${{ runner.os }}-gradle-
+
+      - name: Setup Gradle 7.6
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: '7.6.4'
 
       - name: Build mod JAR
         run: gradle build --no-daemon --stacktrace -x test
         env:
           GRADLE_OPTS: "-Xmx4G -Dfile.encoding=UTF-8"
 
-      - name: List output JARs
-        run: find build/libs -name "*.jar" ! -name "*sources*"
+      - name: Show built files
+        run: ls -lh build/libs/
 
       - name: Upload mod JAR
         uses: actions/upload-artifact@v4
         with:
           name: Weapon-Personalities-Mod
-          path: build/libs/*[!sources].jar
+          path: build/libs/WeaponPersonalities-*.jar
+          if-no-files-found: error
           retention-days: 90
