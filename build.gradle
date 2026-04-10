@@ -1,44 +1,46 @@
-buildscript {
-    repositories {
-        maven { url = 'https://maven.minecraftforge.net' }
-        mavenCentral()
-    }
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '2.3-SNAPSHOT', changing: true
-    }
+plugins {
+    id 'com.gtnewhorizons.retrofuturagradle' version '1.3.27'
 }
-
-apply plugin: 'net.minecraftforge.gradle.forge'
 
 version = '1.0.0'
 group = 'com.weaponpersonalities'
-archivesBaseName = 'weaponpersonalities'
+archivesBaseName = 'WeaponPersonalities'
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(8)
+        vendor = JvmVendorSpec.AZUL
+    }
+    withSourcesJar()
+}
 
 minecraft {
-    version = '1.12.2-14.23.5.2855'
-    runDir = 'run'
-    mappings = 'stable_39'
-    useDepAts = true
+    mcVersion = '1.12.2'
+    username = 'Developer'
+    useDependencyAccessTransformers = true
+}
+
+repositories {
+    maven {
+        name = 'forge'
+        url = 'https://maven.minecraftforge.net'
+    }
+    maven {
+        name = 'SpongePowered'
+        url = 'https://repo.spongepowered.org/maven'
+    }
 }
 
 dependencies {
-    // Forge is included via the minecraft block above
+    implementation('net.minecraftforge:forge:1.12.2-14.23.5.2855:universal')
 }
 
 processResources {
     inputs.property 'version', project.version
-    inputs.property 'mcversion', project.minecraft.version
+    inputs.property 'mcversion', project.minecraft.mcVersion
 
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-        expand 'version': project.version, 'mcversion': project.minecraft.version
-    }
-
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
+    filesMatching('mcmod.info') {
+        expand 'version': project.version, 'mcversion': project.minecraft.mcVersion
     }
 }
 
