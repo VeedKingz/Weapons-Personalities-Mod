@@ -1,11 +1,1 @@
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        maven {
-            name = 'GTNHMaven'
-            url = 'https://maven.gtnewhorizons.com'
-        }
-    }
-}
-
 rootProject.name = 'weaponpersonalities'
