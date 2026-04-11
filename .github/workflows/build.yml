@@ -20,23 +20,26 @@ jobs:
           java-version: '8'
           distribution: 'zulu'
 
+      - name: Install Gradle 4.9
+        run: |
+          wget -q https://services.gradle.org/distributions/gradle-4.9-bin.zip -O /tmp/gradle.zip
+          unzip -q /tmp/gradle.zip -d /opt/gradle
+          echo "/opt/gradle/gradle-4.9/bin" >> $GITHUB_PATH
+
       - name: Cache Gradle and ForgeGradle files
         uses: actions/cache@v4
         with:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          key: ${{ runner.os }}-fg23-${{ hashFiles('build.gradle') }}
           restore-keys: |
-            ${{ runner.os }}-gradle-
+            ${{ runner.os }}-fg23-
 
       - name: Build mod JAR
-        run: |
-          chmod +x gradlew 2>/dev/null || true
-          gradle build --no-daemon --stacktrace -x test
+        run: gradle build --no-daemon --stacktrace -x test
         env:
           GRADLE_OPTS: "-Xmx4G -Dfile.encoding=UTF-8"
-          JAVA_TOOL_OPTIONS: "-Dfile.encoding=UTF-8"
 
       - name: Show built JARs
         run: ls -lh build/libs/
