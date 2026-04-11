@@ -46,9 +46,12 @@ public enum WeaponType {
         if (item instanceof ItemAxe)   return AXE;
 
         // Fallback: check item registry name for "spear" / "dagger" / "knife"
-        String name = item.getRegistryName() != null
-                ? item.getRegistryName().getResourcePath().toLowerCase()
+        String registryName = item.getRegistryName() != null
+                ? item.getRegistryName().toString()
                 : "";
+        String name = registryName.contains(":")
+                ? registryName.split(":")[1].toLowerCase()
+                : registryName.toLowerCase();
 
         if (name.contains("spear") || name.contains("lance") || name.contains("pike")) return SPEAR;
         if (name.contains("dagger") || name.contains("knife") || name.contains("stiletto")) return DAGGER;
